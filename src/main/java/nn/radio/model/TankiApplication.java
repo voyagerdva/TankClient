@@ -2,6 +2,7 @@ package nn.radio.model;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyListener;
 import java.io.IOException;
 
 import static java.lang.Thread.sleep;
@@ -26,7 +27,7 @@ public class TankiApplication {
         frame.add(scena1);
         frame.setVisible(true);
 
-        SimulatorThread simulatorThread = new SimulatorThread("SIMULATOR", scena1);
+        SimulatorThread simulatorThread = new SimulatorThread("SIMULATOR", (KeyListener) scena1);
         simulatorThread.start();
     }
 }

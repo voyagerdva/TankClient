@@ -3,14 +3,14 @@ package nn.radio.model;
 import java.awt.*;
 import java.awt.event.*;
 
-public class SimulatorThread extends Thread implements ActionListener, MouseListener, KeyListener {
-    Scena scena1;
+public class SimulatorThread extends Thread{
+    KeyListener listner;
 
     Button a = new Button("click");
-    KeyEvent e = new KeyEvent(a, 1, 20, 1, 10, 'a');
+    KeyEvent e;
 
-    SimulatorThread(String name, Scena sc) {
-        scena1 = sc;
+    SimulatorThread(String name, KeyListener kl) {
+        listner = kl;
         setName(name);
         System.out.printf("Thread << %s : %s >> was created.", getName(), getState());
     }
@@ -25,7 +25,9 @@ public class SimulatorThread extends Thread implements ActionListener, MouseList
             e.printStackTrace();
         }
 
-        for (int i = 0; i < 20; i++) {
+        System.out.println("MOVE");
+
+        for (int i = 0; i < 15; i++) {
             moveForward(200);
             turnLeft(3);
         }
@@ -36,84 +38,34 @@ public class SimulatorThread extends Thread implements ActionListener, MouseList
 //=================================================================================================
 
     public void moveForward(int dist) {
-        e.setKeyCode(KeyEvent.VK_UP);
+        e = new KeyEvent(a, 1, 20, 1, KeyEvent.VK_UP, 'a');
         for (int i = 0; i < dist; i++) {
-            scena1.keyPressed(e);
+            listner.keyPressed(e);
         }
-        scena1.keyReleased(e);
+        listner.keyReleased(e);
     }
 
     public void moveBack(int dist) {
-        e.setKeyCode(KeyEvent.VK_DOWN);
+        e = new KeyEvent(a, 1, 20, 1, KeyEvent.VK_DOWN, 'a');
         for (int i = 0; i < dist; i++) {
-            scena1.keyPressed(e);
+            listner.keyPressed(e);
         }
-        scena1.keyReleased(e);
+        listner.keyReleased(e);
     }
 
     public void turnLeft(int step) {
-        e.setKeyCode(KeyEvent.VK_LEFT);
+        e = new KeyEvent(a, 1, 20, 1, KeyEvent.VK_LEFT, 'a');
         for (int i = 0; i < step; i++) {
-            scena1.keyPressed(e);
+            listner.keyPressed(e);
         }
-        scena1.keyReleased(e);
+        listner.keyReleased(e);
     }
-    public void moveRight(int step) {
-        e.setKeyCode(KeyEvent.VK_RIGHT);
+    public void turnRight(int step) {
+        e = new KeyEvent(a, 1, 20, 1, KeyEvent.VK_RIGHT, 'a');
         for (int i = 0; i < step; i++) {
-            scena1.keyPressed(e);
+            listner.keyPressed(e);
         }
-        scena1.keyReleased(e);
+        listner.keyReleased(e);
     }
 
-    @Override
-    public void keyPressed(KeyEvent e) {
-
-    }
-
-
-    @Override
-    public void keyTyped(KeyEvent e) {
-
-    }
-
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-
-    }
-
-
-//=================================================================================================
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
-
-    }
-
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-
-    }
 }

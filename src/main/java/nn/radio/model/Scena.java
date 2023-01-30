@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.IOException;
+import java.security.Key;
 import java.util.ArrayList;
 import java.util.stream.IntStream;
 
@@ -31,8 +32,6 @@ public class Scena extends JPanel implements ActionListener, MouseListener, KeyL
         tankList.add(new Tank(400F, 200F));
         tankList.add(new Tank(500F, 300F));
         tankList.add(new Tank(600F, 400F));
-
-
 
     }
 

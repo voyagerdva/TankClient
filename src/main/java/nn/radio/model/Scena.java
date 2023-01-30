@@ -17,6 +17,7 @@ public class Scena extends JPanel implements ActionListener, MouseListener, KeyL
 
     java.util.List<Tank> tankList = new ArrayList<>();
 
+
     public Scena() throws IOException {
         super();
         this.setFocusable(true);
@@ -30,6 +31,9 @@ public class Scena extends JPanel implements ActionListener, MouseListener, KeyL
         tankList.add(new Tank(400F, 200F));
         tankList.add(new Tank(500F, 300F));
         tankList.add(new Tank(600F, 400F));
+
+
+
     }
 
 
@@ -75,6 +79,7 @@ public class Scena extends JPanel implements ActionListener, MouseListener, KeyL
     @Override
     public void mouseClicked(MouseEvent e) {
         tankList.forEach(t -> t.mouseEventClicked(e));
+
     }
 
     @Override

@@ -1,7 +1,5 @@
 package nn.radio.model;
 
-import com.sun.security.auth.module.KeyStoreLoginModule;
-
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
@@ -28,6 +26,7 @@ public class TankiApplication {
         frame.add(scena1);
         frame.setVisible(true);
 
-
+        SimulatorThread simulatorThread = new SimulatorThread("SIMULATOR", scena1);
+        simulatorThread.start();
     }
 }

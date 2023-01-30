@@ -15,7 +15,9 @@ public class Scena extends JPanel implements ActionListener, MouseListener, KeyL
 //===========================================================================
 
 
-    java.util.List<Tank> tankList = new ArrayList<>();
+    public java.util.List<Tank> tankList = new ArrayList<>();
+    public java.util.List<KeyEvent> events = new ArrayList<>();
+
 
     public Scena() throws IOException {
         super();
@@ -30,8 +32,16 @@ public class Scena extends JPanel implements ActionListener, MouseListener, KeyL
         tankList.add(new Tank(400F, 200F));
         tankList.add(new Tank(500F, 300F));
         tankList.add(new Tank(600F, 400F));
-    }
 
+        ClientSimulatorThread simulator = new ClientSimulatorThread("SIMULATOR", events, tankList);
+        simulator.start();
+
+
+        events.forEach(e -> {
+            System.out.println(e.toString());
+
+        });
+    }
 
     @Override
     public void paintComponent(Graphics g) {
@@ -48,22 +58,19 @@ public class Scena extends JPanel implements ActionListener, MouseListener, KeyL
 
     @Override
     public void keyPressed(KeyEvent e) {
-        tankList.stream().filter(t -> t.isFocusable())
-                .limit(1)
-                .forEach(t -> {
-                    try {
-                        t.keyEventPressed(e);
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                });
+//        System.out.println(e.toString());
+        System.out.println(e.getSource());
+        if (e.getKeyCode() == KeyEvent.VK_END) {
+            ClientSimulatorThread simulator = new ClientSimulatorThread("SIMULATOR", events, tankList);
+            simulator.start();
+        }
+        events.add(e);
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        tankList.stream().filter(t -> t.isFocusable())
-                .limit(1)
-                .forEach(t -> t.keyEventReleased(e));
+        System.out.println(e.toString());
+        events.add(e);
     }
 
     @Override

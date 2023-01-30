@@ -108,10 +108,11 @@ public class Tank {
 
     //========================================================================
     public void keyEventPressed(KeyEvent e) throws Exception {
+
         DTO dtoOut = new DTO(this.A);
         dtoOut.keyCode = e.getKeyCode();
 
-        DTO dtoIn = client.run(this, dtoOut);
+        DTO dtoIn = client.begin(this, dtoOut);
 
         this.A = dtoIn.A;
         this.deltaX = dtoIn.deltaX;

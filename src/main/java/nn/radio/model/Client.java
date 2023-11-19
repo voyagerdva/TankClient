@@ -5,7 +5,7 @@ import java.net.Socket;
 
 public class Client {
     public DTO  run(Tank tank, DTO dtoOut) throws Exception {
-        Socket socket = new Socket("localhost", 3010);
+        Socket socket = new Socket("localhost", 4011);
         System.out.println("### socket: " + socket);
 
 //        try {

@@ -12,12 +12,9 @@ import static nn.radio.model.Constants.*;
 
 public class Scena extends JPanel implements ActionListener, MouseListener, KeyListener {
 
-
 //===========================================================================
 
-
     java.util.List<Tank> tankList = new ArrayList<>();
-
 
     public Scena() throws IOException {
         super();

@@ -20,14 +20,14 @@ public class SimulatorThread extends Thread{
         System.out.printf("Thread << %s : %s >> is RUN()", getName(), getState());
 
         try {
-            Thread.sleep(5000);
+            Thread.sleep(7000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
         System.out.println("MOVE");
 
-        for (int i = 0; i < 15; i++) {
+        for (int i = 0; i < 100; i++) {
             moveForward(200);
             turnLeft(3);
         }

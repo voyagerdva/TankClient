@@ -5,8 +5,8 @@ import java.awt.*;
 public class Constants {
     public static int FIG_NUMBER = 1;
 
-    public static int SCENA_WIDTH = 1200;
-    public static int  SCENA_HEIGTH = 1000;
+    public static int SCENA_WIDTH = 900;
+    public static int  SCENA_HEIGTH = 700;
 
     public static int  SCENA_BORDER = 10;
     public static int TOP_COORDINAT = 5;

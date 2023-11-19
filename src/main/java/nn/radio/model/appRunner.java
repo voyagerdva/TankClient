@@ -1,6 +1,7 @@
 package nn.radio.model;
 
 import DB.DBAgent;
+import auth.Registration;
 
 import  javax.swing.*;
 import java.awt.*;
@@ -14,6 +15,34 @@ import static nn.radio.model.Constants.*;
 public class appRunner {
     public static void main(String[] args) throws InterruptedException, IOException {
 
+        try {
+            var registration = new Registration();
+            var choice = registration.loginOrRegistration();
+            System.out.println("Вы ввели " + choice);
+
+            if (choice == 1) {
+                registration.addNewUserToDB();
+            }
+
+
+
+
+
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
+
+
+
+
+
+
+
+        //-----------------------------------------------------------------------------------------
+
         var dbAgent = new DBAgent();
         try {
             dbAgent.connectionDB();
@@ -21,6 +50,9 @@ public class appRunner {
             throw new RuntimeException(e);
         }
 
+
+
+        //------------------------------------------------------------------------------------------
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice[] gs = ge.getScreenDevices();
         GraphicsDevice gd = gs[0];

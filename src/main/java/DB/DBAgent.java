@@ -2,9 +2,11 @@ package DB;
 
 import util.ConnectionManager;
 
-import java.sql.Driver;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
 public class DBAgent {
 
     private final String SQL_CREATE_DATABASE = """
@@ -23,80 +25,83 @@ public class DBAgent {
                 );
                 """;
 
-    private final String SQL_SELECT = """
-            SELECT  id,
-                    username,
-                    password
+    private final String SQL_SELECT_USERNAME = """
+            SELECT username
             FROM credentials
-            WHERE id = ?
+            WHERE username = ?
             """;
 
-    private final String SQL_INSERT_DEFAULT = """
-            INSERT INTO credentials (username, password)
-            VALUES ("user1", "password1");
+    private final String SQL_SELECT_USERNAME_PASSWORD = """
+            SELECT username, password
+            FROM credentials
+            WHERE username = ? AND password = ?
             """;
 
-    private final String SQL_INSERT_CRED = """
-            INSERT INTO credentials (username, password)
-            VALUES (?,?)
+
+    private final String SQL_INSERT = """
+            INSERT INTO "credentials" (username, password)
+            VALUES (?,?);
             """;
 
 
 
     //----------------------------------------------------------------------------------------------------
 
-    public void connectionDB() throws SQLException {
-        boolean dbExists = false;
-        boolean schemaExists = false;
-        boolean tableExists = false;
-
-        var driverClass = Driver.class;
+    public List<String> selectSql(String username) {
+        List<String> result = new ArrayList<>();
 
         try (var connection = ConnectionManager.open();
-             var statement = connection.createStatement()) {
-            System.out.println("Подключились к БД tanks");
-            System.out.println("user = " + ConnectionManager.getUsernameValue());
-            System.out.println("password = " + ConnectionManager.getPasswordValue());
-            System.out.println("url = " + ConnectionManager.getUrlValue());
-            System.out.println(connection.getTransactionIsolation());
+             var preparedStatement = connection.prepareStatement(SQL_SELECT_USERNAME, Statement.RETURN_GENERATED_KEYS)) {
+            System.out.println("we are searching - " + username);
+            System.out.println(preparedStatement);
+            preparedStatement.setString(1, username);
+            System.out.println(preparedStatement);
+
+            var resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                result.add(resultSet.getString("username"));
+                System.out.println(result);
+            }
+            return result;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+        return result;
     }
 
+    public List<String> selectSql(String username, String password) {
+        List<String> result = new ArrayList<>();
 
-    public void insertCredIntoDB(String username, String password) {
         try (var connection = ConnectionManager.open();
-             var preparedStatement = connection.prepareStatement(SQL_INSERT_CRED, Statement.RETURN_GENERATED_KEYS)) {
-
-            //set values
+             var preparedStatement = connection.prepareStatement(SQL_SELECT_USERNAME_PASSWORD, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, password);
+            var resultSet = preparedStatement.executeQuery();
 
-            //execute query
+            while (resultSet.next()) {
+                result.add(resultSet.getString("username"));
+                System.out.println(result);
+            }
+            return result;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public void insertSql(String username, String password) {
+        try (var connection = ConnectionManager.open();
+             var preparedStatement = connection.prepareStatement(SQL_INSERT, Statement.RETURN_GENERATED_KEYS)) {
+            preparedStatement.setString(1, username);
+            preparedStatement.setString(2, password);
             preparedStatement.executeUpdate();
-
-            System.out.println("Record inserted successfully.");
-
+            System.out.println("Record inserted successfully\n");
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-//    public void insertCredIntoDB_DMDEV() {
-//        try (var connection = ConnectionManager.open();
-//             var preparedStatement = connection.prepareStatement(SQL_INSERT_CRED, Statement.RETURN_GENERATED_KEYS)) {
-//            preparedStatement.setString(1, "ticket.getPassengerNo()");
-//            preparedStatement.setString(2, "ticket.getPassengerName()");
-//
-//            preparedStatement.executeUpdate();
-//
-//            var generatedKeys = preparedStatement.getGeneratedKeys();
-//
-////            if (generatedKeys.next()) {
-////                ticket.setId(generatedKeys.getLong("id"));
-////            }
-////            return ticket;
-//        } catch (SQLException throwables) {
-//            throw new DaoException(throwables);
-//        }
-//    }
 }

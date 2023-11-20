@@ -1,32 +1,28 @@
 package auth;
 
 import DB.DBAgent;
-import util.ConnectionManager;
 
 import java.io.*;
-import java.sql.SQLException;
-import java.sql.Statement;
 
 public class Registration {
-
     public int loginOrRegistration() throws IOException {
         InputStream inputStream = System.in;
         Reader inputStreamReader = new InputStreamReader(inputStream);
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 
-        System.out.println("Введите:\n1 - регистрация новой учетки\n2 - залогиниться под существующим именем");
+        System.out.println("Type:\n1 - new account registration\n2 - logIn by exising name");
         String choice = bufferedReader.readLine(); //читаем строку с клавиатуры
         return Integer.parseInt(choice);
     }
 
 
 
-    public void addNewUserToDB() throws IOException {
-        System.out.println("Введите username & password нового пользователя:");
+    public boolean addNewUserToDB() throws IOException {
         InputStream inputStream = System.in;
         Reader inputStreamReader = new InputStreamReader(inputStream);
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 
+        System.out.println("Type new username & password:");
         System.out.println("USERNAME:");
         var username = bufferedReader.readLine();
 
@@ -34,27 +30,56 @@ public class Registration {
         var password = bufferedReader.readLine();
 
 
-        if (!checkUsernameExistInDB(username, password)) {
-            System.out.println("Такой юзер уже зарегистрирован в базе, выходим из программы");
-            System.exit(0);
+        if (checkUsernameExistInDB(username)) {
+            System.out.println("Sorry :-((((   This username exists in DB already. The application will be closed with code 0!");
+//            System.exit(0);
+            return false;
         }
 
         var dbAgent = new DBAgent();
-        dbAgent.insertCredIntoDB(username, password);
-
-    }
-
-    public boolean checkUsernameExistInDB(String username, String password) {
+        dbAgent.insertSql(username, password);
         return true;
 
     }
 
-    public String logInToDB() throws IOException {
+    public boolean checkUsernameExistInDB(String username) {
+        var dbAgent = new DBAgent();
+        var result = dbAgent.selectSql(username);
+
+        return result.size() != 0;
+
+    }
+
+    public boolean checkUsernameExistInDB(String username, String password) {
+        var dbAgent = new DBAgent();
+        var result = dbAgent.selectSql(username, password);
+
+        return result.size() != 0;
+
+    }
+
+    public boolean logInToDB() throws IOException {
+        boolean isLog = false;
+
         InputStream inputStream = System.in;
         Reader inputStreamReader = new InputStreamReader(inputStream);
         BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 
-        return bufferedReader.readLine();
+        System.out.println("Type your username & password:");
+        System.out.println("USERNAME:");
+        var username = bufferedReader.readLine();
+        System.out.println("PASSWORD:");
+        var password = bufferedReader.readLine();
+
+
+        if (checkUsernameExistInDB(username)) {
+            System.out.println("Sorry :-((((   This username exists in DB already. The application will be closed with code 0!");
+//            System.exit(0);
+            return false;
+        }
+
+        return isLog;
+//        return bufferedReader.readLine();
 
     }
 

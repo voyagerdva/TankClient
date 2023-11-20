@@ -15,44 +15,36 @@ import static nn.radio.model.Constants.*;
 public class appRunner {
     public static void main(String[] args) throws InterruptedException, IOException {
 
-        try {
-            var registration = new Registration();
+//        var dbAgent = new DBAgent();
+//        dbAgent.selectSql("kirill");
+        var registration = new Registration();
+
+        while (!registration.logInToDB()) {
             var choice = registration.loginOrRegistration();
-            System.out.println("Вы ввели " + choice);
+            System.out.println("You entered " + choice);
 
             if (choice == 1) {
-                registration.addNewUserToDB();
+                var isReg = registration.addNewUserToDB();
+                continue;
             }
 
             if (choice == 2) {
                 registration.logInToDB();
             }
 
-
-
-
-
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
-
-
-
-
-
 
 
 
 
         //-----------------------------------------------------------------------------------------
 
-        var dbAgent = new DBAgent();
-        try {
-            dbAgent.connectionDB();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+//        var dbAgent = new DBAgent();
+//        try {
+//            dbAgent.connectionDB();
+//        } catch (SQLException e) {
+//            throw new RuntimeException(e);
+//        }
 
 
 

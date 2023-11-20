@@ -24,6 +24,10 @@ public class appRunner {
                 registration.addNewUserToDB();
             }
 
+            if (choice == 2) {
+                registration.logInToDB();
+            }
+
 
 
 

@@ -31,18 +31,17 @@ public class DBAgent {
             WHERE username = ?
             """;
 
-    private final String SQL_SELECT_USERNAME_PASSWORD = """
-            SELECT username, password
-            FROM credentials
-            WHERE username = ? AND password = ?
-            """;
-
 
     private final String SQL_INSERT = """
             INSERT INTO "credentials" (username, password)
             VALUES (?,?);
             """;
 
+    private final String SQL_SELECT_USERNAME_PASSWORD = """
+            SELECT username, password
+            FROM credentials
+            WHERE username = ? AND password = ?
+            """;
 
 
     //----------------------------------------------------------------------------------------------------
@@ -53,10 +52,7 @@ public class DBAgent {
         try (var connection = ConnectionManager.open();
              var preparedStatement = connection.prepareStatement(SQL_SELECT_USERNAME, Statement.RETURN_GENERATED_KEYS)) {
             System.out.println("we are searching - " + username);
-            System.out.println(preparedStatement);
             preparedStatement.setString(1, username);
-            System.out.println(preparedStatement);
-
             var resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
